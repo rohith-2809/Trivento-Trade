@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trivento Trade</title>
+
+    <!-- GSAP Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            line-height: 1.6;
+            background-color: #f0f0f0;
+        }
+
+        /* Header */
+        header {
+            background: #333;
+            color: #fff;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        header .logo {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        nav ul li {
+            position: relative;
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #007BFF;
+        }
+
+        .nav-icon {
+            margin-right: 5px;
+        }
+
+        /* Dropdown for Products */
+        .dropdown {
+            display: none;
+            position: absolute;
+            background: #333;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+            border-radius: 5px;
+            top: 40px;
+            left: 0;
+            min-width: 200px;
+            z-index: 20;
+        }
+
+        nav ul li:hover .dropdown {
+            display: block;
+        }
+
+        .dropdown a {
+            display: block;
+            padding: 10px;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .dropdown a:hover {
+            background-color: #555;
+        }
+
+        /* Banner Section */
+        .banner {
+            background: url('banner.jpg') no-repeat center center/cover;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            text-align: center;
+            position: relative;
+        }
+
+        .banner-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .banner h1 {
+            font-size: 48px;
+            font-weight: 600;
+            z-index: 1;
+        }
+
+        .banner p {
+            font-size: 20px;
+            margin-bottom: 20px;
+            z-index: 1;
+        }
+
+        .btn {
+            background: #007BFF;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            z-index: 1;
+            transition: background 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+        }
+
+        /* About Section */
+        #about {
+            padding: 50px;
+            background: #fff;
+            text-align: center;
+        }
+
+        #about img {
+            width: 50%;
+            margin: 20px auto;
+            display: block;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        #about img:hover {
+            transform: scale(1.05);
+        }
+
+        #about h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        /* Products Section */
+        #products {
+            padding: 50px;
+            background: #f4f4f4;
+            text-align: center;
+        }
+
+        .product-category {
+            display: inline-block;
+            margin: 20px;
+            max-width: 300px;
+            transition: transform 0.3s ease;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .product-category img {
+            width: 100%;
+            border-radius: 10px;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-category h3 {
+            font-size: 24px;
+            margin-top: 10px;
+        }
+
+        .product-details {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .product-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100px;
+            position: relative;
+        }
+
+        .product-item img {
+            width: 80px;
+            height: 80px;
+            border-radius: 5px;
+            object-fit: cover;
+            margin-bottom: 5px;
+            transition: transform 0.3s ease;
+        }
+
+        .product-item img:hover {
+            transform: scale(1.1);
+        }
+
+        .product-item span {
+            font-size: 14px;
+            text-align: center;
+            color: #333;
+        }
+
+        .product-item .hover-description {
+            display: none;
+            position: absolute;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            padding: 5px;
+            border-radius: 5px;
+            font-size: 12px;
+            width: 100%;
+            text-align: center;
+            z-index: 1;
+        }
+
+        .product-item:hover .hover-description {
+            display: block;
+        }
+
+        /* Footer */
+        footer {
+            background: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+
+        footer .contact-info p,
+        footer .social-media a {
+            margin-top: 5px;
+            color: #fff;
+        }
+
+        footer .social-media a {
+            margin: 0 10px;
+            font-size: 20px;
+            transition: color 0.3s ease;
+        }
+
+        footer .social-media a:hover {
+            color: #007BFF;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">Trivento Trade</div>
+        <nav>
+            <ul>
+                <li><a href="#home"><i class="fas fa-home nav-icon"></i>Home</a></li>
+                <li><a href="#about"><i class="fas fa-info-circle nav-icon"></i>About Us</a></li>
+                <li>
+                    <a href="#products"><i class="fas fa-box nav-icon"></i>Products</a>
+                    <div class="dropdown">
+                        <a href="#dehydrated"><i class="fas fa-leaf nav-icon"></i>Dehydrated Food Powders</a>
+                        <a href="#rice"><i class="fas fa-seedling nav-icon"></i>Rice</a>
+                        <a href="#corrugated"><i class="fas fa-cube nav-icon"></i>Corrugated Boxes</a>
+                        <a href="#biodegradable"><i class="fas fa-recycle nav-icon"></i>Biodegradable</a>
+                        <a href="#tea"><i class="fas fa-mug-hot nav-icon"></i>Tea</a>
+                        <a href="#pulses"><i class="fas fa-carrot nav-icon"></i>Pulses</a>
+                        <a href="#drilling"><i class="fas fa-tools nav-icon"></i>Drilling Bits and Rods</a>
+                        <a href="#roofing"><i class="fas fa-building nav-icon"></i>Roofing Sheets</a>
+                    </div>
+                </li>
+                <li><a href="#contact"><i class="fas fa-envelope nav-icon"></i>Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Banner Section -->
+    <section id="home" class="banner">
+        <div class="banner-overlay"></div>
+        <h1>Welcome to Trivento Trade</h1>
+        <p>Exporting quality products worldwide</p>
+        <a href="#contact" class="btn">Request a Quote</a>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about">
+        <h2>About Us</h2>
+        <img src="about.jpg" alt="About Us">
+        <p>Trivento Trade specializes in high-quality exports, ensuring international standards and sustainable practices.</p>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products">
+        <h2>Our Products</h2>
+
+        <!-- Dehydrated Food Powders -->
+        <div id="dehydrated" class="product-category">
+            <img src="dehydrated.jpg" alt="Dehydrated Food">
+            <h3>Dehydrated Food Powders</h3>
+            <div class="product-details">
+                <div class="product-item">
+                    <img src="banana powder.jpg" alt="Banana Powder">
+                    <span>Banana Powder</span>
+                    <div class="hover-description">Made from ripe bananas, ideal for smoothies and baking.</div>
+                </div>
+                <div class="product-item">
+                    <img src="moringa powder.jpg" alt="Moringa Powder">
+                    <span>Moringa Powder</span>
+                    <div class="hover-description">Nutrient-rich green powder from the moringa plant.</div>
+                </div>
+                <div class="product-item">
+                    <img src="onion powder.jpg" alt="Onion Powder">
+                    <span>Onion Powder</span>
+                    <div class="hover-description">Adds savory onion flavor to dishes easily.</div>
+                </div>
+                <div class="product-item">
+                    <img src="garlic powder.jpg" alt="Garlic Powder">
+                    <span>Garlic Powder</span>
+                    <div class="hover-description">A versatile spice for rich, garlicky flavor in cooking.</div>
+                </div>
+                <div class="product-item">
+                    <img src="ginger powder.jpg" alt="Dry Ginger Powder">
+                    <span>Dry Ginger Powder</span>
+                    <div class="hover-description">Aromatic and spicy, perfect for teas and baking.</div>
+                </div>
+                <div class="product-item">
+                    <img src="black pepper powder.jpg" alt="Black Pepper Powder">
+                    <span>Black Pepper Powder</span>
+                    <div class="hover-description">A classic spice for heat and flavor in recipes.</div>
+                </div>
+                <div class="product-item">
+                    <img src="turmeric poweder.jpg" alt="Turmeric Powder">
+                    <span>Turmeric Powder</span>
+                    <div class="hover-description">Golden spice with earthy flavor, popular in curries.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rice -->
+        <div id="rice" class="product-category">
+            <img src="rice.jpg" alt="Rice">
+            <h3>Rice</h3>
+            <div class="product-details">
+                <div class="product-item">
+                    <img src="basmati.jpg" alt="Basmati">
+                    <span>Basmati Rice</span>
+                    <div class="hover-description">Long-grain aromatic rice, perfect for flavorful dishes.</div>
+                </div>
+                <div class="product-item">
+                    <img src="long_grain.jpg" alt="Long Grain">
+                    <span>Long Grain Rice</span>
+                    <div class="hover-description">Light and fluffy when cooked, ideal for side dishes.</div>
+                </div>
+                <div class="product-item">
+                    <img src="medium_grain.jpg" alt="Medium Grain">
+                    <span>Medium Grain Rice</span>
+                    <div class="hover-description">Slightly sticky, suited for risottos and paella.</div>
+                </div>
+                <div class="product-item">
+                    <img src="small_grain.jpg" alt="Small Grain">
+                    <span>Small Grain Rice</span>
+                    <div class="hover-description">Compact grains, perfect for sushi and puddings.</div>
+                </div>
+                <div class="product-item">
+                    <img src="parboiled.jpg" alt="Parboiled">
+                    <span>Parboiled Rice</span>
+                    <div class="hover-description">Partially cooked for faster preparation, firm texture when cooked.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer as Contact Us Section -->
+    <footer id="contact">
+        <h2>Contact Us</h2>
+        <div class="contact-info">
+            <p><i class="fas fa-envelope"></i> jpr@triventotrade.com</p>
+            <p><i class="fas fa-phone-alt"></i> +91 8341985666</p>
+            <p><i class="fas fa-map-marker-alt"></i> Hyderabad, India</p>
+        </div>
+        <div class="social-media">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+    </footer>
+
+    <!-- GSAP Animations -->
+    <script>
+        // Banner Animation
+        gsap.from(".banner h1", { duration: 1.5, y: -50, opacity: 0, ease: "bounce" });
+        gsap.from(".banner p", { duration: 2, y: 50, opacity: 0, delay: 0.5 });
+        gsap.from(".btn", { duration: 1, scale: 0, opacity: 0, delay: 1 });
+
+        // Product Category Hover Animation
+        document.querySelectorAll('.product-category').forEach(category => {
+            category.addEventListener('mouseover', () => {
+                gsap.to(category, { scale: 1.05, duration: 0.3 });
+            });
+            category.addEventListener('mouseout', () => {
+                gsap.to(category, { scale: 1, duration: 0.3 });
+            });
+        });
+    </script>
+</body>
+</html>
